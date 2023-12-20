@@ -1,12 +1,13 @@
 import * as THREE from "three"
+import {texture} from "three/nodes";
 
 let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
 let ambientLight, light;
 
-// stars
-let star;
-let stars = [];
+// cubes
+let cube;
+let cubes = [];
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -33,7 +34,7 @@ function main() {
     renderer.setClearColor(new THREE.Color("skyblue"));
 
     createLights();
-    createStars();
+    createcubes();
 
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
@@ -68,10 +69,16 @@ function createCamera(y) {
 }
 
 function createPlane(){
+    // create texture
+    let texture = new THREE.TextureLoader().load( "assets/grass.png" );
+
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 1, 12 );
     // smoother surface
     let geometry = new THREE.PlaneGeometry(10, 120, 5, 5);
     // self lighting red
-    let material = new THREE.MeshPhongMaterial({color: 0x999999, emissive: 0xff0000, emissiveIntensity: 0.2, side: THREE.DoubleSide});
+    let material = new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
     let plane = new THREE.Mesh( geometry, material );
 
     // central point at 0, 0, 0
@@ -114,18 +121,22 @@ function animate() {
     // set speed
     let speed = 0.1;
 
-    stars.forEach(star => {
-        star.position.z += speed;
+    cubes.forEach(cube => {
+        cube.position.z += speed;
 
-        // set star visible range
-        star.visible = star.position.z < 0 && star.position.z > -50;
+        // set cube visible range
+        cube.visible = cube.position.z < 0 && cube.position.z > -50;
 
-        // reset star position
-        if (star.position.z > 0) {
-            // star.visible = true;
-            star.position.x = randomInt(-4, 4);
-            star.position.z += randomInt(-90, -40);
+        // reset cube position
+        if (cube.position.z > 0) {
+            // cube.visible = true;
+            cube.position.x = randomInt(-4, 4);
+            cube.position.z += randomInt(-90, -40);
         }
+
+        //rotate cube
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
 
     });
 
@@ -137,21 +148,24 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createStar(){
-    let geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
-    let material = new THREE.MeshPhongMaterial( {color: 0xffff00} );
-    star = new THREE.Mesh( geometry, material );
-    star.castShadow = true;
-    star.receiveShadow = true;
-    scene.add( star );
-    return star;
+function createcube(){
+    let geometry = new THREE.BoxGeometry( 0.6, 0.6, 0.6 );
+    let material = new THREE.MeshPhongMaterial( {color: 0xff0000} );
+    cube = new THREE.Mesh( geometry, material );
+    cube.castShadow = true;
+    cube.receiveShadow = true;
+    cube.rotation.x = Math.PI / 4;
+    cube.rotation.y = Math.PI / 4;
+
+    scene.add( cube );
+    return cube;
 }
 
-function createStars(){
-    for (let i = 0; i < 15; i += 1){
-        star = createStar();
-        star.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
-        stars.push(star);
-        scene.add(star);
+function createcubes(){
+    for (let i = 0; i < 5; i += 1){
+        cube = createcube();
+        cube.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        cubes.push(cube);
+        scene.add(cube);
     }
 }
