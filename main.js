@@ -1,23 +1,25 @@
 import * as THREE from "three"
 
-let camera, scene, renderer, canvas, controls, ground;
+let camera, cameraUpper, CurrentCamera;
+let scene, renderer, canvas, controls, ground;
 let ambientLight, light;
 
-let WIDTH = window.innerWidth;
-let HEIGHT = window.innerHeight;
-let ASPECT_RATIO = window.innerWidth/window.innerHeight;
+let width = window.innerWidth;
+let height = window.innerHeight;
+let aspect = window.innerWidth/window.innerHeight;
 function main() {
     canvas = document.getElementById( "gl-canvas" );
     renderer = new THREE.WebGLRenderer({canvas});
 
-    camera = new THREE.PerspectiveCamera(90, ASPECT_RATIO, 0.1, 1000);
+    camera = createCamera(3);
+    cameraUpper = createCamera(5);
+    // set init camera
+    CurrentCamera = camera;
+
     scene = new THREE.Scene();
 
-    camera.position.set(0, 3, -3);
-    camera.lookAt(new THREE.Vector3(0,1,1));
-
     // fit screen size
-    renderer.setSize(WIDTH, HEIGHT);
+    renderer.setSize(width, height);
 
     // Enable Shadows in the Renderer
     renderer.shadowMap.enabled = true;
@@ -28,47 +30,66 @@ function main() {
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
 
-    renderer.render(scene, camera)
+    renderer.render(scene, CurrentCamera);
 
-    // 监听窗口变化，如果大小改变则调用onWindowResize函数
-    window.addEventListener( 'resize', onWindowResize );
+    // if press key s, switch camera
+    window.addEventListener('click', function () {
+           switchCamera();
+    });
+
+    // 监听窗口变化，如果大小改变则调用onWindowResize函数，没用！
+    // window.addEventListener( 'resize', onWindowResize );
 }
 
 main();
 
-function createPlane(){
-    const geometry = new THREE.PlaneGeometry(10, 100, 10, 10);
-    // self lighting red
-    const material = new THREE.MeshPhongMaterial({color: 0x999999, emissive: 0xff0000, emissiveIntensity: 0.1, side: THREE.DoubleSide});
-    ground = new THREE.Mesh( geometry, material );
+function switchCamera() {
+    if (CurrentCamera === camera) {
+        CurrentCamera = cameraUpper;
+    } else {
+        CurrentCamera = camera;
+    }
+    renderer.render(scene, CurrentCamera);
+}
+function createCamera(y) {
+    let newcamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+    newcamera.position.y = y;
+    newcamera.lookAt(new THREE.Vector3(0,0,-10));
+    return newcamera;
+}
 
-    ground.rotation.x = Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add( ground );
+function createPlane(){
+    // smoother surface
+    let geometry = new THREE.PlaneGeometry(10, 100, 5, 5);
+    // self lighting red
+    let material = new THREE.MeshPhongMaterial({color: 0x999999, emissive: 0xff0000, emissiveIntensity: 0.2, side: THREE.DoubleSide});
+    let plane = new THREE.Mesh( geometry, material );
+
+    // central point at 0, 0, 0
+    plane.position.set(0, 0, 0);
+    plane.rotation.x = Math.PI / 2;
+    plane.receiveShadow = true;
+    scene.add( plane );
 }
 
 function createLights() {
-    ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    light = new THREE.PointLight(0xffffff, 0.8, 18);
-    light.position.set(-3,6,-3);
-
-    light.castShadow = true;
+    // light = new THREE.PointLight(0xffffff, 0.8, 18);
+    // light.position.set(-3,6,-3);
+    //
+    // light.castShadow = true;
     // Will not light anything closer than 0.1 units or further than 25 units
     // light.shadow.camera.near = 0.1;
     // light.shadow.camera.far = 25;
-    scene.add(light);
+    // scene.add(light);
 
 }
 
 function onWindowResize() {
-
-
-    camera.aspect = ASPECT_RATIO;
+    camera.aspect = aspect;
     camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( width, height );
     renderer.render(scene, camera);
-
 }
