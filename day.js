@@ -29,6 +29,9 @@ function main() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.BasicShadowMap;
 
+    // set background color
+    renderer.setClearColor(new THREE.Color("skyblue"));
+
     createLights();
     createStars();
 
@@ -39,7 +42,7 @@ function main() {
 
     // if press key s, switch camera
     window.addEventListener('click', function () {
-           switchCamera();
+        switchCamera();
     });
 
     animate();
