@@ -150,7 +150,7 @@ function randomInt(min, max) {
 
 function createcube(){
     let geometry = new THREE.BoxGeometry( 0.6, 0.6, 0.6 );
-    let material = new THREE.MeshPhongMaterial( {color: 0xff0000} );
+    let material = new THREE.MeshPhongMaterial( {color: 0xff0000, transparent: true, opacity: 0.8} );
     cube = new THREE.Mesh( geometry, material );
     cube.castShadow = true;
     cube.receiveShadow = true;
