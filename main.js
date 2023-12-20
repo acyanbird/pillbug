@@ -29,6 +29,10 @@ function main() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.BasicShadowMap;
 
+    // create background
+    let background = createBackground();
+    scene.add(background);
+
     createLights();
     createStars();
 
@@ -151,4 +155,15 @@ function createStars(){
         stars.push(star);
         scene.add(star);
     }
+}
+
+function createBackground() {
+    // Adds a background of stars to a sphere to visualize space
+    let texture = new THREE.TextureLoader().load("assets/backgroundstar.jpg");
+    let material = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.BackSide
+    });
+    let sphere = new THREE.SphereGeometry(40, 64, 64);
+    return new THREE.Mesh(sphere, material);
 }
