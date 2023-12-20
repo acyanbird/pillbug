@@ -8,6 +8,10 @@ let ambientLight, light;
 let star;
 let stars = [];
 
+// cubes
+let cube;
+let cubes = [];
+
 let width = window.innerWidth;
 let height = window.innerHeight;
 let aspect = window.innerWidth/window.innerHeight;
@@ -35,6 +39,7 @@ function main() {
 
     createLights();
     createStars();
+    createcubes();
 
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
@@ -130,6 +135,25 @@ function animate() {
 
     });
 
+    cubes.forEach(cube => {
+        cube.position.z += speed;
+
+        // set cube visible range
+        cube.visible = cube.position.z < 0 && cube.position.z > -50;
+
+        // reset cube position
+        if (cube.position.z > 0) {
+            // cube.visible = true;
+            cube.position.x = randomInt(-4, 4);
+            cube.position.z += randomInt(-90, -40);
+        }
+
+        //rotate cube
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+
+    });
+
     renderer.render(scene, CurrentCamera);
     requestAnimationFrame(animate);
 }
@@ -166,4 +190,26 @@ function createBackground() {
     });
     let sphere = new THREE.SphereGeometry(40, 64, 64);
     return new THREE.Mesh(sphere, material);
+}
+
+function createcube(){
+    let geometry = new THREE.BoxGeometry( 0.6, 0.6, 0.6 );
+    let material = new THREE.MeshPhongMaterial( {color: 0xff0000, transparent: true, opacity: 0.8} );
+    cube = new THREE.Mesh( geometry, material );
+    cube.castShadow = true;
+    cube.receiveShadow = true;
+    cube.rotation.x = Math.PI / 4;
+    cube.rotation.y = Math.PI / 4;
+
+    scene.add( cube );
+    return cube;
+}
+
+function createcubes(){
+    for (let i = 0; i < 5; i += 1){
+        cube = createcube();
+        cube.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        cubes.push(cube);
+        scene.add(cube);
+    }
 }
