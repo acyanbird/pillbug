@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Day</title>
+    <style>
+        #end{
+            display: none;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 30px;
+            align-content: space-between;
+            padding-top: 250px;
+        }
+    </style>
 </head>
 <body>
-<h1 style= "z-index:5; position: fixed;" id = 'scoreAndLife'>Score: 0 Life: 3</h1>
+<h1 style= "z-index:5; position: fixed;" id = "score">Score: 0</h1>
+<br>
+<br>
+<h1 style= "z-index:5; position: fixed;" id = "life">Life: 3 </h1>
+<div id="end" style= "z-index:100; position: fixed;">
+    <p id = "endText">Game Over</p>
+    <p id = "finalScore">Score: </p>
+    <a href="index.html" id = "restart">Click to back to main menu.</a>
+</div>
 <canvas id="gl-canvas" style="z-index: 1"></canvas>
 <script type="module" charset="UTF-8" src="day.js"></script>
 </body>

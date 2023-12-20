@@ -5,14 +5,22 @@ let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
 let ambientLight, light;
 
-// cubes
-let cube;
-let cubes = [];
+let life = 3;
+let gameend = false;
+
+// dodecas
+let dodeca;
+let dodecas = [];
+
+// stars
+let star;
+let stars = [];
 
 let width = window.innerWidth;
 let height = window.innerHeight;
 let aspect = window.innerWidth/window.innerHeight;
 function main() {
+
     canvas = document.getElementById( "gl-canvas" );
     renderer = new THREE.WebGLRenderer({canvas});
 
@@ -34,7 +42,8 @@ function main() {
     renderer.setClearColor(new THREE.Color("skyblue"));
 
     createLights();
-    createcubes();
+    createdodecas();
+    createStars();
 
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
@@ -118,54 +127,97 @@ function onWindowResize() {
 }
 
 function animate() {
+
+     if (gameend) {
+         // show end
+         document.getElementById("end").style.display = "block";
+         return;
+     }
     // set speed
     let speed = 0.1;
 
-    cubes.forEach(cube => {
-        cube.position.z += speed;
+    stars.forEach(star => {
+        star.position.z += speed;
 
-        // set cube visible range
-        cube.visible = cube.position.z < 0 && cube.position.z > -50;
+        // set star visible range
+        star.visible = star.position.z < 0 && star.position.z > -50;
 
-        // reset cube position
-        if (cube.position.z > 0) {
-            // cube.visible = true;
-            cube.position.x = randomInt(-4, 4);
-            cube.position.z += randomInt(-90, -40);
+        // reset star position
+        if (star.position.z > 0) {
+            // star.visible = true;
+            star.position.x = randomInt(-4, 4);
+            star.position.z += randomInt(-90, -40);
         }
 
-        //rotate cube
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+    });
+
+    dodecas.forEach(dodeca => {
+        dodeca.position.z += speed;
+
+        // set dodeca visible range
+        dodeca.visible = dodeca.position.z < 0 && dodeca.position.z > -60;
+
+        // reset dodeca position
+        if (dodeca.position.z > 0) {
+            // dodeca.visible = true;
+            dodeca.position.x = randomInt(-4, 4);
+            dodeca.position.z += randomInt(-90, -40);
+        }
+
+        //rotate dodeca
+        dodeca.rotation.x += 0.01;
+        dodeca.rotation.y += 0.01;
 
     });
 
     renderer.render(scene, CurrentCamera);
-    requestAnimationFrame(animate);
+
+    if (!gameend) {
+        requestAnimationFrame(animate);
+    }
 }
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createcube(){
-    let geometry = new THREE.BoxGeometry( 0.6, 0.6, 0.6 );
-    let material = new THREE.MeshPhongMaterial( {color: 0xff0000, transparent: true, opacity: 0.8} );
-    cube = new THREE.Mesh( geometry, material );
-    cube.castShadow = true;
-    cube.receiveShadow = true;
-    cube.rotation.x = Math.PI / 4;
-    cube.rotation.y = Math.PI / 4;
+function createdodeca(){
+    let geometry = new THREE.DodecahedronGeometry( 0.4 );
+    let material = new THREE.MeshPhongMaterial( {color: 0xFFC0CB, transparent: true, opacity: 0.9} );
+    dodeca = new THREE.Mesh( geometry, material );
+    dodeca.castShadow = true;
+    dodeca.receiveShadow = true;
+    dodeca.rotation.x = Math.PI / 4;
+    dodeca.rotation.y = Math.PI / 4;
 
-    scene.add( cube );
-    return cube;
+    scene.add( dodeca );
+    return dodeca;
 }
 
-function createcubes(){
+function createdodecas(){
     for (let i = 0; i < 5; i += 1){
-        cube = createcube();
-        cube.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
-        cubes.push(cube);
-        scene.add(cube);
+        dodeca = createdodeca();
+        dodeca.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        dodecas.push(dodeca);
+        scene.add(dodeca);
+    }
+}
+
+function createStar(){
+    let geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
+    let material = new THREE.MeshPhongMaterial( {color: 0xffffff} );
+    star = new THREE.Mesh( geometry, material );
+    star.castShadow = true;
+    star.receiveShadow = true;
+    scene.add( star );
+    return star;
+}
+
+function createStars(){
+    for (let i = 0; i < 15; i += 1){
+        star = createStar();
+        star.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        stars.push(star);
+        scene.add(star);
     }
 }

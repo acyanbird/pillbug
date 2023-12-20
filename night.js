@@ -139,7 +139,7 @@ function animate() {
         cube.position.z += speed;
 
         // set cube visible range
-        cube.visible = cube.position.z < 0 && cube.position.z > -50;
+        cube.visible = cube.position.z < 0 && cube.position.z > -60;
 
         // reset cube position
         if (cube.position.z > 0) {
