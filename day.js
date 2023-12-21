@@ -145,7 +145,7 @@ function animate() {
         if (star.position.z > 0) {
             // star.visible = true;
             star.position.x = randomInt(-4, 4);
-            star.position.z += randomInt(-120, -80);
+            star.position.z += randomInt(-110, -60);
         }
 
         //rotate star
@@ -164,7 +164,7 @@ function animate() {
         if (dodeca.position.z > 0) {
             // dodeca.visible = true;
             dodeca.position.x = randomInt(-4, 4);
-            dodeca.position.z += randomInt(-90, -40);
+            dodeca.position.z += randomInt(-110, -60);
         }
 
         //rotate dodeca
@@ -201,7 +201,7 @@ function createdodeca(){
 function createdodecas(){
     for (let i = 0; i < 5; i += 1){
         dodeca = createdodeca();
-        dodeca.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        dodeca.position.set(randomInt(-4,4), 0.5, randomInt(-120,-80));
         dodecas.push(dodeca);
         scene.add(dodeca);
     }
@@ -220,7 +220,7 @@ function createStar(){
 function createStars(){
     for (let i = 0; i < 15; i += 1){
         star = createStar();
-        star.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        star.position.set(randomInt(-4,4), 0.5, randomInt(-120,-80));
         stars.push(star);
         scene.add(star);
     }

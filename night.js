@@ -78,7 +78,7 @@ function createCamera(y) {
 
 function createPlane(){
     // smoother surface
-    let geometry = new THREE.PlaneGeometry(10, 120, 5, 5);
+    let geometry = new THREE.PlaneGeometry(13, 120, 5, 5);
     // self lighting red
     let material = new THREE.MeshPhongMaterial({color: 0x999999, emissive: 0xff0000, emissiveIntensity: 0.2, side: THREE.DoubleSide});
     let plane = new THREE.Mesh( geometry, material );
@@ -138,7 +138,7 @@ function animate() {
         // reset star position
         if (star.position.z > 0) {
             // star.visible = true;
-            star.position.x = randomInt(-4, 4);
+            star.position.x = randomInt(-5, 5);
             star.position.z += randomInt(-90, -40);
         }
 
@@ -153,7 +153,7 @@ function animate() {
         // reset cube position
         if (cube.position.z > 0) {
             // cube.visible = true;
-            cube.position.x = randomInt(-4, 4);
+            cube.position.x = randomInt(-5, 5);
             cube.position.z += randomInt(-90, -40);
         }
 
@@ -186,7 +186,7 @@ function createStar(){
 function createStars(){
     for (let i = 0; i < 15; i += 1){
         star = createStar();
-        star.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        star.position.set(randomInt(-5,5), 0.5, randomInt(-10,10));
         stars.push(star);
         scene.add(star);
     }
@@ -219,7 +219,7 @@ function createcube(){
 function createcubes(){
     for (let i = 0; i < 5; i += 1){
         cube = createcube();
-        cube.position.set(randomInt(-4,4), 0.5, randomInt(-10,10));
+        cube.position.set(randomInt(-5, 5), 0.5, randomInt(-10,10));
         cubes.push(cube);
         scene.add(cube);
     }
