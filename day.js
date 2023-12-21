@@ -1,5 +1,4 @@
 import * as THREE from "three"
-import {texture} from "three/nodes";
 
 let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
@@ -91,7 +90,7 @@ function createPlane(){
     let plane = new THREE.Mesh( geometry, material );
 
     // central point at 0, 0, 0
-    plane.position.set(0, 0, 0);
+    plane.position.set(0, 0, -60);
     plane.rotation.x = Math.PI / 2;
     plane.receiveShadow = true;
     // plane.castShadow = true;
@@ -102,8 +101,8 @@ function createLights() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-    directionalLight.position.set( 0, 5, -50 );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+    directionalLight.position.set( 0, 5, 20 );
     directionalLight.castShadow = true;
     scene.add( directionalLight );
 
@@ -134,7 +133,7 @@ function animate() {
          return;
      }
     // set speed
-    let speed = 0.1;
+    let speed = 0.15;
 
     stars.forEach(star => {
         star.position.z += speed;
@@ -146,7 +145,7 @@ function animate() {
         if (star.position.z > 0) {
             // star.visible = true;
             star.position.x = randomInt(-4, 4);
-            star.position.z += randomInt(-90, -40);
+            star.position.z += randomInt(-120, -80);
         }
 
     });

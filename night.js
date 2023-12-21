@@ -4,6 +4,9 @@ let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
 let ambientLight, light;
 
+let gameend = false;
+let life = 3;
+
 // stars
 let star;
 let stars = [];
@@ -117,6 +120,12 @@ function onWindowResize() {
 }
 
 function animate() {
+    if (gameend) {
+        // show end
+        document.getElementById("end").style.display = "block";
+        return;
+    }
+
     // set speed
     let speed = 0.1;
 
@@ -155,8 +164,10 @@ function animate() {
     });
 
     renderer.render(scene, CurrentCamera);
-    requestAnimationFrame(animate);
-}
+
+    if (!gameend) {
+        requestAnimationFrame(animate);
+    }}
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
