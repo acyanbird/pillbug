@@ -148,6 +148,10 @@ function animate() {
             star.position.z += randomInt(-120, -80);
         }
 
+        //rotate star
+        star.rotation.x += 0.01;
+        star.rotation.y += 0.01;
+
     });
 
     dodecas.forEach(dodeca => {
@@ -166,6 +170,7 @@ function animate() {
         //rotate dodeca
         dodeca.rotation.x += 0.01;
         dodeca.rotation.y += 0.01;
+
 
     });
 
@@ -204,7 +209,7 @@ function createdodecas(){
 
 function createStar(){
     let geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
-    let material = new THREE.MeshPhongMaterial( {color: 0xffffff} );
+    let material = new THREE.MeshStandardMaterial( {color: 0xFFD700, metalness: 0.8, roughness: 0.5} );
     star = new THREE.Mesh( geometry, material );
     star.castShadow = true;
     star.receiveShadow = true;
