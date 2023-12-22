@@ -60,6 +60,9 @@ function main() {
     createLights();
     createdodecas();
     createStars();
+    createTorus("red", -50, 2);
+    createTorus("cyan", -20, 1);
+    createTorus("yellow", -10, 0.5);
 
     createModel();
 
@@ -120,7 +123,6 @@ function createPlane(){
     plane.position.set(0, 0, -60);
     plane.rotation.x = Math.PI / 2;
     plane.receiveShadow = true;
-    // plane.castShadow = true;
     scene.add( plane );
 }
 
@@ -128,20 +130,15 @@ function createLights() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-    directionalLight.position.set( 0, 5, 20 );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    directionalLight.position.set( 0, 3, 20 );
     directionalLight.castShadow = true;
     scene.add( directionalLight );
 
-
-    // light = new THREE.PointLight(0xffffff, 0.8, 18);
-    // light.position.set(-3,6,-3);
-    //
-    // light.castShadow = true;
-    // Will not light anything closer than 0.1 units or further than 25 units
-    // light.shadow.camera.near = 0.1;
-    // light.shadow.camera.far = 25;
-    // scene.add(light);
+    const directionalLight2 = new THREE.DirectionalLight( "orange", 0.8 );
+    directionalLight2.position.set( 0, 20, -20 );
+    directionalLight2.castShadow = true;
+    scene.add( directionalLight2 );
 
 }
 
@@ -252,6 +249,7 @@ function animate() {
             document.getElementById("life").innerHTML ="Life: "+ life;
             if (life === 0) {
                 gameend = true;
+                document.getElementById("finalScore").innerHTML ="Final Score: "+ score;
                 document.getElementById("end").style.display = "block";
             }
         }
@@ -266,9 +264,6 @@ function animate() {
     if (keysPressed['ArrowRight'] && model.position.x < 3.5) {
         model.position.x += 0.05
     }
-
-
-
 
     renderer.render(scene, CurrentCamera);
 
@@ -326,5 +321,16 @@ function createStars(){
         stars.push(star);
         scene.add(star);
     }
+}
+
+function createTorus(color, z, tube){
+    let geometry = new THREE.TorusGeometry( 7, tube, 16, 100 );
+    let material = new THREE.MeshPhongMaterial( {color: color} );
+    let torus = new THREE.Mesh( geometry, material );
+    torus.castShadow = true;
+    torus.receiveShadow = true;
+    torus.position.set(0, 0, z)
+    scene.add( torus );
+    return torus;
 }
 
