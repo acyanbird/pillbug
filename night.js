@@ -56,7 +56,7 @@ function main() {
 
     animate();
     // 监听窗口变化，如果大小改变则调用onWindowResize函数，没用！
-    // window.addEventListener( 'resize', onWindowResize );
+    window.addEventListener( 'resize', onWindowResize );
 }
 
 main();
@@ -113,6 +113,10 @@ function createLights() {
 }
 
 function onWindowResize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    aspect = window.innerWidth/window.innerHeight;
+
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
     renderer.setSize( width, height );

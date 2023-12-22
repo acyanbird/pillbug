@@ -1,14 +1,17 @@
 import * as THREE from "three"
 import {GLTFLoader} from "three/addons";
+import {Sphere} from "three";
+
+// collision boxes
+
+let modelBox;
+let starSphere = [];
 
 // add model
 let loader = new GLTFLoader();
-// loader.load('assets/pill02.glb', function ( gltf ) {
-//     // handle the loaded model
-// }, undefined, function ( error ) {
-//     console.error( error );
-// });
 let model;
+
+let speed = 0.15;
 
 let keysPressed = {};
 
@@ -18,6 +21,7 @@ let scene, renderer, canvas, controls, ground;
 let ambientLight, light;
 
 let life = 3;
+let score = 0;
 let gameend = false;
 
 // dodecas
@@ -71,7 +75,7 @@ function main() {
 
     animate();
     // 监听窗口变化，如果大小改变则调用onWindowResize函数，没用！
-    // window.addEventListener( 'resize', onWindowResize );
+    window.addEventListener( 'resize', onWindowResize );
 
     window.addEventListener('keydown', function(event) {
         keysPressed[event.key] = true;
@@ -142,10 +146,39 @@ function createLights() {
 }
 
 function onWindowResize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    aspect = window.innerWidth/window.innerHeight;
+
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
     renderer.setSize( width, height );
     renderer.render(scene, camera);
+}
+
+function createModel(){
+    loader.load( 'assets/pill02.glb', function ( gltf ) {
+        model = gltf.scene;
+        model.scale.set(0.3, 0.3, 0.3);
+        model.position.set(0, 0.5, -2.5);
+        model.castShadow = true;
+        model.receiveShadow = true;
+        scene.add( model );
+
+        // add bounding box
+        modelBox = new THREE.Box3().setFromObject(model);
+
+        model.traverse(function (child) {
+            if (child.isMesh) {
+                child.geometry.computeBoundingBox();
+                console.log('Min values: ', child.geometry.boundingBox.min);
+                console.log('Max values: ', child.geometry.boundingBox.max);
+            }
+        });
+
+    }, undefined, function ( error ) {
+        console.error( error );
+    } );
 }
 
 function animate() {
@@ -156,9 +189,12 @@ function animate() {
          return;
      }
 
-     // scene.add(model);
+    // update bounding box for model
+    if (model) {
+        modelBox.setFromObject(model);
+    }
+
     // set speed
-    let speed = 0.15;
 
     stars.forEach(star => {
         star.position.z += speed;
@@ -176,6 +212,16 @@ function animate() {
         //rotate star
         star.rotation.x += 0.01;
         star.rotation.y += 0.01;
+
+        // detect collision
+        let starSphere = new Sphere(star.position, 0.18);
+        if (modelBox && modelBox.intersectsSphere(starSphere)) {
+            // reset star position
+            star.position.x = randomInt(-4, 4);
+            star.position.z += randomInt(-110, -60);
+            score += 1;
+            document.getElementById("score").innerHTML ="Score: "+ score;
+        }
 
     });
 
@@ -199,14 +245,19 @@ function animate() {
 
     });
 
-    // move model
+    // move model while in range
 
-    if (keysPressed['ArrowLeft']) {
+    if (keysPressed['ArrowLeft'] && model.position.x > -3.5) {
         model.position.x -= 0.05
     }
-    if (keysPressed['ArrowRight']) {
+    if (keysPressed['ArrowRight'] && model.position.x < 3.5) {
         model.position.x += 0.05
     }
+
+
+    // detect collision
+
+
 
     renderer.render(scene, CurrentCamera);
 
@@ -238,6 +289,9 @@ function createdodecas(){
         dodeca.position.set(randomInt(-4,4), 0.5, randomInt(-120,-80));
         dodecas.push(dodeca);
         scene.add(dodeca);
+
+        // add bounding box
+        dodeca.boundingBox = new THREE.Box3().setFromObject(dodeca);
     }
 }
 
@@ -248,6 +302,9 @@ function createStar(){
     star.castShadow = true;
     star.receiveShadow = true;
     scene.add( star );
+    // add bounding sphere
+    star.geometry.computeBoundingSphere();
+    star.boundingSphere = star.geometry.boundingSphere;
     return star;
 }
 
@@ -260,25 +317,3 @@ function createStars(){
     }
 }
 
-function createModel(){
-    loader.load( 'assets/pill02.glb', function ( gltf ) {
-        model = gltf.scene;
-        model.scale.set(0.3, 0.3, 0.3);
-        model.position.set(0, 0.5, -2.5);
-        // model.rotation.y = Math.PI / 2;
-        model.castShadow = true;
-        model.receiveShadow = true;
-        scene.add( model );
-
-        model.traverse(function (child) {
-            if (child.isMesh) {
-                child.geometry.computeBoundingBox();
-                console.log('Min values: ', child.geometry.boundingBox.min);
-                console.log('Max values: ', child.geometry.boundingBox.max);
-            }
-        });
-
-    }, undefined, function ( error ) {
-        console.error( error );
-    } );
-}
