@@ -165,14 +165,6 @@ function createModel(){
         // add bounding box
         modelBox = new THREE.Box3().setFromObject(model);
 
-        model.traverse(function (child) {
-            if (child.isMesh) {
-                child.geometry.computeBoundingBox();
-                console.log('Min values: ', child.geometry.boundingBox.min);
-                console.log('Max values: ', child.geometry.boundingBox.max);
-            }
-        });
-
     }, undefined, function ( error ) {
         console.error( error );
     } );
@@ -218,6 +210,9 @@ function animate() {
             star.position.z += randomInt(-110, -60);
             score += 1;
             document.getElementById("score").innerHTML ="Score: "+ score;
+            // play sound effect
+            let audio = new Audio('assets/getpoint.wav');
+            audio.play();
         }
 
     });
@@ -247,7 +242,14 @@ function animate() {
             dodeca.position.z += randomInt(-110, -60);
             life -= 1;
             document.getElementById("life").innerHTML ="Life: "+ life;
-            if (life === 0) {
+            // play sound effect
+            if (life !== 0) {
+                let audio = new Audio('assets/loselife.wav');
+                audio.play();
+            }
+            else {
+                let audio = new Audio('assets/gameover.wav');
+                audio.play();
                 gameend = true;
                 document.getElementById("finalScore").innerHTML ="Final Score: "+ score;
                 document.getElementById("end").style.display = "block";
