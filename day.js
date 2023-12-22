@@ -242,6 +242,19 @@ function animate() {
         dodeca.rotation.x += 0.01;
         dodeca.rotation.y += 0.01;
 
+        // detect collision
+        let dodecaSphere = new Sphere(dodeca.position, 0.35);
+        if (modelBox && modelBox.intersectsSphere(dodecaSphere)) {
+            // reset dodeca position
+            dodeca.position.x = randomInt(-4, 4);
+            dodeca.position.z += randomInt(-110, -60);
+            life -= 1;
+            document.getElementById("life").innerHTML ="Life: "+ life;
+            if (life === 0) {
+                gameend = true;
+                document.getElementById("end").style.display = "block";
+            }
+        }
 
     });
 
@@ -254,8 +267,6 @@ function animate() {
         model.position.x += 0.05
     }
 
-
-    // detect collision
 
 
 
