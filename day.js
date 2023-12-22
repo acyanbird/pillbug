@@ -1,4 +1,9 @@
 import * as THREE from "three"
+// import { GLTFLoader } from 'three-gltf-loader';
+
+// add model
+const loader = new GLTFLoader();
+let model;
 
 let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
@@ -43,6 +48,8 @@ function main() {
     createLights();
     createdodecas();
     createStars();
+
+    // createModel();
 
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
@@ -225,3 +232,17 @@ function createStars(){
         scene.add(star);
     }
 }
+
+// function createModel(){
+//     loader.load( 'assets/pill02.glb', function ( gltf ) {
+//         model = gltf.scene;
+//         model.scale.set(0.01, 0.01, 0.01);
+//         model.position.set(0, 0, -5);
+//         model.rotation.y = Math.PI / 2;
+//         model.castShadow = true;
+//         model.receiveShadow = true;
+//         scene.add( model );
+//     }, undefined, function ( error ) {
+//         console.error( error );
+//     } );
+// }
