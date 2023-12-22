@@ -1,9 +1,17 @@
 import * as THREE from "three"
-// import { GLTFLoader } from 'three-gltf-loader';
+import {GLTFLoader} from "three/addons";
 
 // add model
-const loader = new GLTFLoader();
+let loader = new GLTFLoader();
+// loader.load('assets/pill02.glb', function ( gltf ) {
+//     // handle the loaded model
+// }, undefined, function ( error ) {
+//     console.error( error );
+// });
 let model;
+
+let keysPressed = {};
+
 
 let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
@@ -49,7 +57,7 @@ function main() {
     createdodecas();
     createStars();
 
-    // createModel();
+    createModel();
 
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
@@ -64,6 +72,14 @@ function main() {
     animate();
     // 监听窗口变化，如果大小改变则调用onWindowResize函数，没用！
     // window.addEventListener( 'resize', onWindowResize );
+
+    window.addEventListener('keydown', function(event) {
+        keysPressed[event.key] = true;
+    });
+
+    window.addEventListener('keyup', function(event) {
+        keysPressed[event.key] = false;
+    });
 }
 
 main();
@@ -139,6 +155,8 @@ function animate() {
          document.getElementById("end").style.display = "block";
          return;
      }
+
+     // scene.add(model);
     // set speed
     let speed = 0.15;
 
@@ -180,6 +198,15 @@ function animate() {
 
 
     });
+
+    // move model
+
+    if (keysPressed['ArrowLeft']) {
+        model.position.x -= 0.05
+    }
+    if (keysPressed['ArrowRight']) {
+        model.position.x += 0.05
+    }
 
     renderer.render(scene, CurrentCamera);
 
@@ -233,16 +260,25 @@ function createStars(){
     }
 }
 
-// function createModel(){
-//     loader.load( 'assets/pill02.glb', function ( gltf ) {
-//         model = gltf.scene;
-//         model.scale.set(0.01, 0.01, 0.01);
-//         model.position.set(0, 0, -5);
-//         model.rotation.y = Math.PI / 2;
-//         model.castShadow = true;
-//         model.receiveShadow = true;
-//         scene.add( model );
-//     }, undefined, function ( error ) {
-//         console.error( error );
-//     } );
-// }
+function createModel(){
+    loader.load( 'assets/pill02.glb', function ( gltf ) {
+        model = gltf.scene;
+        model.scale.set(0.3, 0.3, 0.3);
+        model.position.set(0, 0.5, -2.5);
+        // model.rotation.y = Math.PI / 2;
+        model.castShadow = true;
+        model.receiveShadow = true;
+        scene.add( model );
+
+        model.traverse(function (child) {
+            if (child.isMesh) {
+                child.geometry.computeBoundingBox();
+                console.log('Min values: ', child.geometry.boundingBox.min);
+                console.log('Max values: ', child.geometry.boundingBox.max);
+            }
+        });
+
+    }, undefined, function ( error ) {
+        console.error( error );
+    } );
+}
