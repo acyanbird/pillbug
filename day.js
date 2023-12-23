@@ -1,11 +1,8 @@
 import * as THREE from "three"
 import {GLTFLoader} from "three/addons";
-import {Sphere} from "three";
 
 // collision boxes
-
 let modelBox;
-let starSphere = [];
 
 // add model
 let loader = new GLTFLoader();
@@ -71,7 +68,7 @@ function main() {
 
     renderer.render(scene, CurrentCamera);
 
-    // if press key s, switch camera
+    // if clicked, switch camera
     window.addEventListener('click', function () {
         switchCamera();
     });
@@ -173,8 +170,6 @@ function createModel(){
 function animate() {
 
      if (gameend) {
-         // show end
-         document.getElementById("end").style.display = "block";
          return;
      }
 
@@ -182,8 +177,6 @@ function animate() {
     if (model) {
         modelBox.setFromObject(model);
     }
-
-    // set speed
 
     stars.forEach(star => {
         star.position.z += speed;
@@ -203,7 +196,7 @@ function animate() {
         star.rotation.y += 0.01;
 
         // detect collision
-        let starSphere = new Sphere(star.position, 0.18);
+        let starSphere = new THREE.Sphere(star.position, 0.18);
         if (modelBox && modelBox.intersectsSphere(starSphere)) {
             // reset star position
             star.position.x = randomInt(-4, 4);
@@ -235,7 +228,7 @@ function animate() {
         dodeca.rotation.y += 0.01;
 
         // detect collision
-        let dodecaSphere = new Sphere(dodeca.position, 0.35);
+        let dodecaSphere = new THREE.Sphere(dodeca.position, 0.35);
         if (modelBox && modelBox.intersectsSphere(dodecaSphere)) {
             // reset dodeca position
             dodeca.position.x = randomInt(-4, 4);
@@ -335,4 +328,3 @@ function createTorus(color, z, tube){
     scene.add( torus );
     return torus;
 }
-

@@ -1,4 +1,17 @@
 import * as THREE from "three"
+import {GLTFLoader} from "three/addons";
+
+// collision boxes
+let modelBox;
+
+// add model
+let loader = new GLTFLoader();
+let model;
+
+let speed = 0.15;
+
+let keysPressed = {};
+
 
 let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
@@ -6,6 +19,7 @@ let ambientLight, light;
 
 let gameend = false;
 let life = 3;
+let score = 0;
 
 // stars
 let star;
@@ -40,9 +54,13 @@ function main() {
     let background = createBackground();
     scene.add(background);
 
+    // add fog
+    scene.fog = new THREE.FogExp2("black", 0.035);
+
     createLights();
     createStars();
     createcubes();
+    createModel();
 
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
@@ -55,8 +73,16 @@ function main() {
     });
 
     animate();
-    // 监听窗口变化，如果大小改变则调用onWindowResize函数，没用！
+    // 监听窗口变化，如果大小改变则调用onWindowResize函数
     window.addEventListener( 'resize', onWindowResize );
+
+    window.addEventListener('keydown', function(event) {
+        keysPressed[event.key] = true;
+    });
+
+    window.addEventListener('keyup', function(event) {
+        keysPressed[event.key] = false;
+    });
 }
 
 main();
@@ -95,7 +121,7 @@ function createLights() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
     directionalLight.position.set( 0, 5, -50 );
     directionalLight.castShadow = true;
     scene.add( directionalLight );
@@ -123,6 +149,25 @@ function onWindowResize() {
     renderer.render(scene, camera);
 }
 
+function createModel(){
+    loader.load( 'assets/pill02.glb', function ( gltf ) {
+        model = gltf.scene;
+        model.scale.set(0.3, 0.3, 0.3);
+        model.position.set(0, 0.5, -2.5);
+        model.castShadow = true;
+        model.receiveShadow = true;
+        scene.add( model );
+
+        // add bounding box
+        modelBox = new THREE.Box3().setFromObject(model);
+
+    }, undefined, function ( error ) {
+        console.error( error );
+    } );
+}
+
+
+
 function animate() {
     if (gameend) {
         // show end
@@ -130,9 +175,10 @@ function animate() {
         return;
     }
 
-    // set speed
-    let speed = 0.1;
-
+    // update bounding box for model
+    if (model) {
+        modelBox.setFromObject(model);
+    }
     stars.forEach(star => {
         star.position.z += speed;
 
@@ -144,6 +190,19 @@ function animate() {
             // star.visible = true;
             star.position.x = randomInt(-5, 5);
             star.position.z += randomInt(-90, -40);
+        }
+
+        // detect collision
+        let starSphere = new THREE.Sphere(star.position, 0.18);
+        if (modelBox && modelBox.intersectsSphere(starSphere)) {
+            // reset star position
+            star.position.x = randomInt(-5, 5);
+            star.position.z += randomInt(-90, -40);
+            score += 1;
+            document.getElementById("score").innerHTML ="Score: "+ score;
+            // play sound effect
+            let audio = new Audio('assets/getpoint.wav');
+            audio.play();
         }
 
     });
@@ -165,7 +224,39 @@ function animate() {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
 
+        let cubeBox = new THREE.Box3().setFromObject(cube);
+        console.log(cubeBox);
+        if (modelBox && modelBox.intersectsBox(cubeBox)) {
+            // reset cube position
+            cube.position.x = randomInt(-5, 5);
+            cube.position.z += randomInt(-90, -40);
+            life -= 1;
+            document.getElementById("life").innerHTML ="Life: "+ life;
+            // play sound effect
+            if (life !== 0) {
+                let audio = new Audio('assets/loselife.wav');
+                audio.play();
+            }
+            else {
+                let audio = new Audio('assets/gameover.wav');
+                audio.play();
+                gameend = true;
+                document.getElementById("finalScore").innerHTML ="Final Score: "+ score;
+                document.getElementById("end").style.display = "block";
+            }
+        }
+
     });
+
+    // move model while in range
+
+    if (keysPressed['ArrowLeft'] && model.position.x > -4.5) {
+        model.position.x -= 0.06
+    }
+    if (keysPressed['ArrowRight'] && model.position.x < 4.5) {
+        model.position.x += 0.06
+    }
+
 
     renderer.render(scene, CurrentCamera);
 
@@ -179,7 +270,7 @@ function randomInt(min, max) {
 
 function createStar(){
     let geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
-    let material = new THREE.MeshPhongMaterial( {color: 0xffff00} );
+    let material = new THREE.MeshMatcapMaterial( {color: 0xffff00} );
     star = new THREE.Mesh( geometry, material );
     star.castShadow = true;
     star.receiveShadow = true;
@@ -209,7 +300,7 @@ function createBackground() {
 
 function createcube(){
     let geometry = new THREE.BoxGeometry( 0.6, 0.6, 0.6 );
-    let material = new THREE.MeshPhongMaterial( {color: 0xff0000, transparent: true, opacity: 0.8} );
+    let material = new THREE.MeshPhongMaterial( {color: 0xff0000, transparent: true, opacity: 0.6} );
     cube = new THREE.Mesh( geometry, material );
     cube.castShadow = true;
     cube.receiveShadow = true;
