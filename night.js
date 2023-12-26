@@ -29,6 +29,9 @@ let stars = [];
 let cube;
 let cubes = [];
 
+// crystal
+let crystal1, crystal2;
+
 let width = window.innerWidth;
 let height = window.innerHeight;
 let aspect = window.innerWidth/window.innerHeight;
@@ -55,12 +58,15 @@ function main() {
     scene.add(background);
 
     // add fog
-    scene.fog = new THREE.FogExp2("black", 0.035);
+    scene.fog = new THREE.FogExp2(0x090912, 0.035);
+
+    createCrystal();
 
     createLights();
     createStars();
     createcubes();
     createModel();
+
 
     // Create a plane that receives shadows (but does not cast them)
     createPlane();
@@ -126,16 +132,6 @@ function createLights() {
     directionalLight.castShadow = true;
     scene.add( directionalLight );
 
-
-    // light = new THREE.PointLight(0xffffff, 0.8, 18);
-    // light.position.set(-3,6,-3);
-    //
-    // light.castShadow = true;
-    // Will not light anything closer than 0.1 units or further than 25 units
-    // light.shadow.camera.near = 0.1;
-    // light.shadow.camera.far = 25;
-    // scene.add(light);
-
 }
 
 function onWindowResize() {
@@ -150,12 +146,15 @@ function onWindowResize() {
 }
 
 function createModel(){
-    loader.load( 'assets/pill02.glb', function ( gltf ) {
+    loader.load( 'assets/pill.glb', function ( gltf ) {
         model = gltf.scene;
         model.scale.set(0.3, 0.3, 0.3);
-        model.position.set(0, 0.5, -2.5);
-        model.castShadow = true;
-        model.receiveShadow = true;
+        model.position.set(0, 0.2, -3);
+        gltf.scene.traverse(function(node) {
+            if (node.isMesh) {
+                node.castShadow = true;
+            }
+        });
         scene.add( model );
 
         // add bounding box
@@ -251,11 +250,18 @@ function animate() {
     // move model while in range
 
     if (keysPressed['ArrowLeft'] && model.position.x > -4.5) {
-        model.position.x -= 0.06
+        model.position.x -= 0.065
     }
     if (keysPressed['ArrowRight'] && model.position.x < 4.5) {
-        model.position.x += 0.06
+        model.position.x += 0.065
     }
+
+    // rotate crystal
+    crystal1.rotation.x += 0.01;
+    crystal1.rotation.y += 0.01;
+
+    crystal2.rotation.x += 0.01;
+    crystal2.rotation.y += 0.01;
 
 
     renderer.render(scene, CurrentCamera);
@@ -281,7 +287,7 @@ function createStar(){
 function createStars(){
     for (let i = 0; i < 15; i += 1){
         star = createStar();
-        star.position.set(randomInt(-5,5), 0.5, randomInt(-10,10));
+        star.position.set(randomInt(-5,5), 0.5, randomInt(-70,-50));
         stars.push(star);
         scene.add(star);
     }
@@ -314,8 +320,41 @@ function createcube(){
 function createcubes(){
     for (let i = 0; i < 5; i += 1){
         cube = createcube();
-        cube.position.set(randomInt(-5, 5), 0.5, randomInt(-10,10));
+        cube.position.set(randomInt(-5, 5), 0.5, randomInt(-70,-50));
         cubes.push(cube);
         scene.add(cube);
     }
+}
+
+function createCrystal() {
+    let geometry = new THREE.OctahedronGeometry(0.4);
+    let material = new THREE.MeshPhysicalMaterial({
+        color: "white", // Purple color
+        transparent: true,
+        opacity: 0.5,
+        roughness: 0.3,
+        reflectivity: 0.7,
+        clearcoat: 0.8
+    });
+    crystal1 = new THREE.Mesh(geometry, material);
+    crystal1.position.set(-3, 4, -5); // 设置水晶的位置
+    crystal1.castShadow = true;
+    crystal1.rotation.y = Math.PI / 4;
+
+    crystal2 = new THREE.Mesh(geometry, material);
+    crystal2.position.set(3, 3.5, -6); // 设置水晶的位置
+    crystal2.castShadow = true;
+    crystal2.rotation.y = Math.PI / 4;
+
+    scene.add(crystal1, crystal2);
+
+    let spotlight1 = new THREE.SpotLight("red", 8);
+    spotlight1.position.set(-3, 5, -5);
+    spotlight1.target = crystal1;
+    spotlight1.castShadow = true;
+
+    let spotlight2 = new THREE.SpotLight("blue", 8);
+    spotlight2.position.set(3, 4.5, -6);
+    spotlight2.target = crystal2;
+    scene.add(spotlight1, spotlight2);
 }

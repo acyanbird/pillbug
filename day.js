@@ -127,12 +127,12 @@ function createLights() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
     directionalLight.position.set( 0, 3, 20 );
     directionalLight.castShadow = true;
     scene.add( directionalLight );
 
-    const directionalLight2 = new THREE.DirectionalLight( "orange", 0.8 );
+    const directionalLight2 = new THREE.DirectionalLight( "orange", 1 );
     directionalLight2.position.set( 0, 20, -20 );
     directionalLight2.castShadow = true;
     scene.add( directionalLight2 );
@@ -151,12 +151,15 @@ function onWindowResize() {
 }
 
 function createModel(){
-    loader.load( 'assets/pill02.glb', function ( gltf ) {
+    loader.load( 'assets/pill.glb', function ( gltf ) {
         model = gltf.scene;
         model.scale.set(0.3, 0.3, 0.3);
-        model.position.set(0, 0.5, -2.5);
-        model.castShadow = true;
-        model.receiveShadow = true;
+        model.position.set(0, 0.2, -3);
+        gltf.scene.traverse(function(node) {
+            if (node.isMesh) {
+                node.castShadow = true;
+            }
+        });
         scene.add( model );
 
         // add bounding box
