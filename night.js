@@ -127,7 +127,7 @@ function createLights() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 1.5 );
     directionalLight.position.set( 0, 5, -50 );
     directionalLight.castShadow = true;
     scene.add( directionalLight );
