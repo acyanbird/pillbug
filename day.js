@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import {GLTFLoader} from "three/addons";
 
-import grassimg from "./assets/grass.png";
+import grassimg from "./assets/gm.jpg";
 import modelpath from "./assets/pill.glb";
 import gameover from "./assets/gameover.wav";
 import loselife from "./assets/loselife.wav";

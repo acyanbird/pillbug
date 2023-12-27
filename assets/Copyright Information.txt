@@ -1,0 +1,12 @@
+pill.glb is the Blender Mode file.
+
+gm.jpg comes from lab 8 /Resources/Grass/Grass002_2K_Color.png and converted to jpg to reduce file size.
+
+backgrounds.jpg comes from https://unsplash.com/photos/cluster-of-stars-in-the-sky-qVotvbsuM_c
+under the Unsplash License, can be used for free for Commercial and non-commercial purposes
+
+All three sound effects are from https://opengameart.org/content/512-sound-effects-8-bit-style under cc0 license
+
+get point: /General Sounds/Positive Sounds/sfx_coin_cluster3.wav
+lose life: /General Sounds/Negative Sounds/sfx_sounds_damage1.wav
+game over: /General Sounds/Weird Sounds/sfx_sound_noise.wav
