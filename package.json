@@ -1,4 +1,10 @@
 {
+  "name": "graphic course work pillbug adventure",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite"
+  },
+  "author": "Betty Liu",
   "devDependencies": {
     "vite": "^5.0.10"
   },
