@@ -11,6 +11,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
@@ -21,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Build
-      run: vite build
+      run: npx vite build
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.4
