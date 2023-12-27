@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - package  # or your default branch
+      
+permissions: write-all
 
 jobs:
   build-and-deploy:
