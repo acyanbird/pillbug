@@ -190,8 +190,8 @@ function animate() {
         // reset star position
         if (star.position.z > 0) {
             // star.visible = true;
-            star.position.x = randomInt(-4, 4);
-            star.position.z += randomInt(-110, -60);
+            star.position.x = randomNum(-4, 4);
+            star.position.z += randomNum(-110, -60);
         }
 
         //rotate star
@@ -202,8 +202,8 @@ function animate() {
         let starSphere = new THREE.Sphere(star.position, 0.18);
         if (modelBox && modelBox.intersectsSphere(starSphere)) {
             // reset star position
-            star.position.x = randomInt(-4, 4);
-            star.position.z += randomInt(-110, -60);
+            star.position.x = randomNum(-4, 4);
+            star.position.z += randomNum(-110, -60);
             score += 1;
             document.getElementById("score").innerHTML ="Score: "+ score;
             // play sound effect
@@ -222,8 +222,8 @@ function animate() {
         // reset dodeca position
         if (dodeca.position.z > 0) {
             // dodeca.visible = true;
-            dodeca.position.x = randomInt(-4, 4);
-            dodeca.position.z += randomInt(-110, -60);
+            dodeca.position.x = randomNum(-4, 4);
+            dodeca.position.z += randomNum(-110, -60);
         }
 
         //rotate dodeca
@@ -234,8 +234,8 @@ function animate() {
         let dodecaSphere = new THREE.Sphere(dodeca.position, 0.35);
         if (modelBox && modelBox.intersectsSphere(dodecaSphere)) {
             // reset dodeca position
-            dodeca.position.x = randomInt(-4, 4);
-            dodeca.position.z += randomInt(-110, -60);
+            dodeca.position.x = randomNum(-4, 4);
+            dodeca.position.z += randomNum(-110, -60);
             life -= 1;
             document.getElementById("life").innerHTML ="Life: "+ life;
             // play sound effect
@@ -270,8 +270,8 @@ function animate() {
     }
 }
 
-function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+function randomNum(min, max) {
+    return Math.random() * (max - min) + min;
 }
 
 function createdodeca(){
@@ -290,7 +290,7 @@ function createdodeca(){
 function createdodecas(){
     for (let i = 0; i < 5; i += 1){
         dodeca = createdodeca();
-        dodeca.position.set(randomInt(-4,4), 0.5, randomInt(-120,-80));
+        dodeca.position.set(randomNum(-4,4), 0.5, randomNum(-120,-80));
         dodecas.push(dodeca);
         scene.add(dodeca);
 
@@ -315,7 +315,7 @@ function createStar(){
 function createStars(){
     for (let i = 0; i < 15; i += 1){
         star = createStar();
-        star.position.set(randomInt(-4,4), 0.5, randomInt(-120,-80));
+        star.position.set(randomNum(-4,4), 0.5, randomNum(-120,-80));
         stars.push(star);
         scene.add(star);
     }
