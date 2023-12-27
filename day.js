@@ -105,7 +105,7 @@ function createCamera(y) {
 
 function createPlane(){
     // create texture
-    let texture = new THREE.TextureLoader().load( "assets/grass.png" );
+    let texture = new THREE.TextureLoader().load( "./assets/grass.png" );
 
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
@@ -151,7 +151,7 @@ function onWindowResize() {
 }
 
 function createModel(){
-    loader.load( 'assets/pill.glb', function ( gltf ) {
+    loader.load( './assets/pill.glb', function ( gltf ) {
         model = gltf.scene;
         model.scale.set(0.3, 0.3, 0.3);
         model.position.set(0, 0.2, -3);
@@ -207,7 +207,7 @@ function animate() {
             score += 1;
             document.getElementById("score").innerHTML ="Score: "+ score;
             // play sound effect
-            let audio = new Audio('assets/getpoint.wav');
+            let audio = new Audio('./assets/getpoint.wav');
             audio.play();
         }
 
@@ -240,11 +240,11 @@ function animate() {
             document.getElementById("life").innerHTML ="Life: "+ life;
             // play sound effect
             if (life !== 0) {
-                let audio = new Audio('assets/loselife.wav');
+                let audio = new Audio('./assets/loselife.wav');
                 audio.play();
             }
             else {
-                let audio = new Audio('assets/gameover.wav');
+                let audio = new Audio('./assets/gameover.wav');
                 audio.play();
                 gameend = true;
                 document.getElementById("finalScore").innerHTML ="Final Score: "+ score;
