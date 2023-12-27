@@ -2,7 +2,9 @@
   "name": "graphic course work pillbug adventure",
   "version": "0.0.1",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "author": "Betty Liu",
   "devDependencies": {

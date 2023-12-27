@@ -1,6 +1,12 @@
 import * as THREE from "three"
 import {GLTFLoader} from "three/addons";
 
+import starbg from "./assets/backgroundstar.jpg";
+import modelpath from "./assets/pill.glb";
+import gameover from "./assets/gameover.wav";
+import loselife from "./assets/loselife.wav";
+import getpoint from "./assets/getpoint.wav";
+
 // collision boxes
 let modelBox;
 
@@ -146,7 +152,7 @@ function onWindowResize() {
 }
 
 function createModel(){
-    loader.load( './assets/pill.glb', function ( gltf ) {
+    loader.load( modelpath, function ( gltf ) {
         model = gltf.scene;
         model.scale.set(0.3, 0.3, 0.3);
         model.position.set(0, 0.2, -3);
@@ -200,7 +206,7 @@ function animate() {
             score += 1;
             document.getElementById("score").innerHTML ="Score: "+ score;
             // play sound effect
-            let audio = new Audio('./assets/getpoint.wav');
+            let audio = new Audio(getpoint);
             audio.play();
         }
 
@@ -233,11 +239,11 @@ function animate() {
             document.getElementById("life").innerHTML ="Life: "+ life;
             // play sound effect
             if (life !== 0) {
-                let audio = new Audio('./assets/loselife.wav');
+                let audio = new Audio(loselife);
                 audio.play();
             }
             else {
-                let audio = new Audio('./assets/gameover.wav');
+                let audio = new Audio(gameover);
                 audio.play();
                 gameend = true;
                 document.getElementById("finalScore").innerHTML ="Final Score: "+ score;
@@ -295,7 +301,7 @@ function createStars(){
 
 function createBackground() {
     // Adds a background of stars to a sphere to visualize space
-    let texture = new THREE.TextureLoader().load("./assets/backgroundstar.jpg");
+    let texture = new THREE.TextureLoader().load(starbg);
     let material = new THREE.MeshBasicMaterial({
         map: texture,
         side: THREE.BackSide
