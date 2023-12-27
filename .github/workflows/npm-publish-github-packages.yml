@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: '18.13.0'  # Directly specify Node.js version
 
@@ -27,7 +27,7 @@ jobs:
       run: npx vite build
 
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages  # Deploying to a branch named gh-pages
         folder: dist      # Folder where Vite builds the project, might be different depending on your vite.config.js
