@@ -43,7 +43,7 @@ let height = window.innerHeight;
 let aspect = window.innerWidth/window.innerHeight;
 function main() {
     canvas = document.getElementById( "gl-canvas" );
-    renderer = new THREE.WebGLRenderer({canvas});
+    renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 
     camera = createCamera(3);
     cameraUpper = createCamera(5);

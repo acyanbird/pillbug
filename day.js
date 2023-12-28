@@ -41,7 +41,7 @@ let aspect = window.innerWidth/window.innerHeight;
 function main() {
 
     canvas = document.getElementById( "gl-canvas" );
-    renderer = new THREE.WebGLRenderer({canvas});
+    renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 
     camera = createCamera(3);
     cameraUpper = createCamera(5);
@@ -332,7 +332,6 @@ function createTorus(color, z, tube){
     let material = new THREE.MeshPhongMaterial( {color: color} );
     let torus = new THREE.Mesh( geometry, material );
     torus.castShadow = true;
-    torus.receiveShadow = true;
     torus.position.set(0, 0, z)
     scene.add( torus );
     return torus;
