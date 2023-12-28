@@ -355,12 +355,12 @@ function createCrystal() {
 
     scene.add(crystal1, crystal2);
 
-    let spotlight1 = new THREE.SpotLight("red", 8);
+    let spotlight1 = new THREE.SpotLight(0x5e2e68, 18);
     spotlight1.position.set(-3, 5, -5);
     spotlight1.target = crystal1;
     spotlight1.castShadow = true;
 
-    let spotlight2 = new THREE.SpotLight("blue", 8);
+    let spotlight2 = new THREE.SpotLight(0x1e8fac, 18);
     spotlight2.position.set(3, 4.5, -6);
     spotlight2.target = crystal2;
     scene.add(spotlight1, spotlight2);
