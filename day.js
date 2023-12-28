@@ -55,7 +55,7 @@ function main() {
 
     // Enable Shadows in the Renderer
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.BasicShadowMap;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     // set background color
     renderer.setClearColor(new THREE.Color("skyblue"));

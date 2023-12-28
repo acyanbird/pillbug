@@ -56,7 +56,7 @@ function main() {
 
     // Enable Shadows in the Renderer
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.BasicShadowMap;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     // create background
     createBackground();
