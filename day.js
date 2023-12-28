@@ -122,7 +122,6 @@ function createPlane(){
     let material = new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
     let plane = new THREE.Mesh( geometry, material );
 
-    // central point at 0, 0, 0
     plane.position.set(0, 0, -60);
     plane.rotation.x = Math.PI / 2;
     plane.receiveShadow = true;

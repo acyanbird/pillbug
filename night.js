@@ -114,13 +114,12 @@ function createCamera(y) {
 
 function createPlane(){
     // smoother surface
-    let geometry = new THREE.PlaneGeometry(13, 120, 5, 5);
+    let geometry = new THREE.PlaneGeometry(13, 60, 5, 5);
     // self lighting red
     let material = new THREE.MeshPhongMaterial({color: 0x999999, emissive: 0xff0000, emissiveIntensity: 0.2, side: THREE.DoubleSide});
     let plane = new THREE.Mesh( geometry, material );
 
-    // central point at 0, 0, 0
-    plane.position.set(0, 0, 0);
+    plane.position.set(0, 0, -30);
     plane.rotation.x = Math.PI / 2;
     plane.receiveShadow = true;
     // plane.castShadow = true;
