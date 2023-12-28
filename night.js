@@ -1,5 +1,6 @@
 import * as THREE from "three"
-import {GLTFLoader} from "three/addons";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+
 import modelpath from "./assets/pill.glb";
 import gameover from "./assets/gameover.wav";
 import loselife from "./assets/loselife.wav";
@@ -113,7 +114,7 @@ function createCamera(y) {
 
 function createPlane(){
     // smoother surface
-    let geometry = new THREE.PlaneGeometry(13, 60, 5, 5);
+    let geometry = new THREE.PlaneGeometry(13, 60, 2, 10);
     // self lighting red
     let material = new THREE.MeshPhongMaterial({color: 0x999999, emissive: 0xff0000, emissiveIntensity: 0.2, side: THREE.DoubleSide});
     let plane = new THREE.Mesh( geometry, material );

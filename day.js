@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import {GLTFLoader} from "three/addons";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import grassimg from "./assets/gm.jpg";
 import modelpath from "./assets/pill.glb";
@@ -21,7 +21,7 @@ let keysPressed = {};
 
 let camera, cameraUpper, CurrentCamera;
 let scene, renderer, canvas, controls, ground;
-let ambientLight, light;
+let ambientLight
 
 let life = 3;
 let score = 0;
@@ -117,7 +117,7 @@ function createPlane(){
     texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set( 1, 12 );
     // smoother surface
-    let geometry = new THREE.PlaneGeometry(10, 120, 5, 5);
+    let geometry = new THREE.PlaneGeometry(10, 120, 1, 12);
     // self lighting red
     let material = new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
     let plane = new THREE.Mesh( geometry, material );

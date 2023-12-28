@@ -17,3 +17,10 @@ This online demo is deployed on github pages. You can use workflow config file a
 
 ## Online Demo
 https://acyanbird.github.io/pillbug/
+
+## TODO
+- [ ] Reduce duplicated code in single file
+- [ ] Reduce by create common.js
+- [ ] Loading page
+- [ ] CSS overflow problem
+- [ ] Animation using tween(?) or other library
