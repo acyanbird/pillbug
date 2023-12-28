@@ -83,7 +83,6 @@ function main() {
     });
 
     animate();
-    // 监听窗口变化，如果大小改变则调用onWindowResize函数
     window.addEventListener( 'resize', onWindowResize );
 
     window.addEventListener('keydown', function(event) {
@@ -343,12 +342,12 @@ function createCrystal() {
         clearcoat: 0.8
     });
     crystal1 = new THREE.Mesh(geometry, material);
-    crystal1.position.set(-3, 4, -5); // 设置水晶的位置
+    crystal1.position.set(-3, 4, -5);
     crystal1.castShadow = true;
     crystal1.rotation.y = Math.PI / 4;
 
     crystal2 = new THREE.Mesh(geometry, material);
-    crystal2.position.set(3, 3.5, -6); // 设置水晶的位置
+    crystal2.position.set(3, 3.5, -6);
     crystal2.castShadow = true;
     crystal2.rotation.y = Math.PI / 4;
 

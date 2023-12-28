@@ -80,7 +80,7 @@ function main() {
     });
 
     animate();
-    // 监听窗口变化，如果大小改变则调用onWindowResize函数，没用！
+
     window.addEventListener( 'resize', onWindowResize );
 
     window.addEventListener('keydown', function(event) {
