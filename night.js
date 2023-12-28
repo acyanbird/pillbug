@@ -302,6 +302,9 @@ function createStars(){
 function createBackground() {
     // Adds a background of stars to a sphere to visualize space
     let texture = new THREE.TextureLoader().load(starbg);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(4, 4);
     let material = new THREE.MeshBasicMaterial({
         map: texture,
         side: THREE.BackSide
