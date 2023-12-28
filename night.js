@@ -1,11 +1,10 @@
 import * as THREE from "three"
 import {GLTFLoader} from "three/addons";
-
-import starbg from "./assets/backgroundstar.jpg";
 import modelpath from "./assets/pill.glb";
 import gameover from "./assets/gameover.wav";
 import loselife from "./assets/loselife.wav";
 import getpoint from "./assets/getpoint.wav";
+import starbgsquare from "./assets/starbackgroundsquare.jpg";
 
 // collision boxes
 let modelBox;
@@ -60,8 +59,7 @@ function main() {
     renderer.shadowMap.type = THREE.BasicShadowMap;
 
     // create background
-    let background = createBackground();
-    scene.add(background);
+    createBackground();
 
     // add fog
     scene.fog = new THREE.FogExp2(0x090912, 0.035);
@@ -300,17 +298,17 @@ function createStars(){
 }
 
 function createBackground() {
-    // Adds a background of stars to a sphere to visualize space
-    let texture = new THREE.TextureLoader().load(starbg);
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(4, 4);
-    let material = new THREE.MeshBasicMaterial({
-        map: texture,
-        side: THREE.BackSide
-    });
-    let sphere = new THREE.SphereGeometry(40, 64, 64);
-    return new THREE.Mesh(sphere, material);
+    // Adds a background of stars to a skybox
+    const cubeloader = new THREE.CubeTextureLoader();
+    let cubetexture = cubeloader.load([
+        starbgsquare, // right
+        starbgsquare, // left
+        starbgsquare, // top
+        starbgsquare, // bottom
+        starbgsquare, // front
+        starbgsquare  // back
+    ]);
+    scene.background = cubetexture;
 }
 
 function createcube(){
