@@ -24,3 +24,4 @@ https://acyanbird.github.io/pillbug/
 - [ ] Loading page
 - [ ] CSS overflow problem
 - [ ] Animation using tween(?) or other library
+- [ ] Add a sun to day level

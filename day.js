@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
 import grassimg from "./assets/gm.jpg";
 import modelpath from "./assets/pill.glb";
@@ -14,7 +14,7 @@ let modelBox;
 let loader = new GLTFLoader();
 let model;
 
-let speed = 0.15;
+let speed = 0.16;
 
 let keysPressed = {};
 
@@ -37,10 +37,12 @@ let stars = [];
 
 let width = window.innerWidth;
 let height = window.innerHeight;
-let aspect = window.innerWidth/window.innerHeight;
+let aspect = window.innerWidth / window.innerHeight;
+
 function main() {
 
-    canvas = document.getElementById( "gl-canvas" );
+    canvas = document.getElementById("gl-canvas");
+    // apply antialias to give better effect
     renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 
     camera = createCamera(3);
@@ -81,13 +83,14 @@ function main() {
 
     animate();
 
-    window.addEventListener( 'resize', onWindowResize );
+    // resize window
+    window.addEventListener('resize', onWindowResize);
 
-    window.addEventListener('keydown', function(event) {
+    // model movement
+    window.addEventListener('keydown', function (event) {
         keysPressed[event.key] = true;
     });
-
-    window.addEventListener('keyup', function(event) {
+    window.addEventListener('keyup', function (event) {
         keysPressed[event.key] = false;
     });
 }
@@ -102,84 +105,85 @@ function switchCamera() {
     }
     renderer.render(scene, CurrentCamera);
 }
+
 function createCamera(y) {
     let newcamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
     newcamera.position.y = y;
-    newcamera.lookAt(new THREE.Vector3(0,0,-10));
+    newcamera.lookAt(new THREE.Vector3(0, 0, -10));
     return newcamera;
 }
 
-function createPlane(){
+function createPlane() {
     // create texture
-    let texture = new THREE.TextureLoader().load( grassimg );
+    let texture = new THREE.TextureLoader().load(grassimg);
 
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set( 1, 12 );
+    texture.repeat.set(1, 12);
     // smoother surface
     let geometry = new THREE.PlaneGeometry(10, 120, 1, 12);
     // self lighting red
     let material = new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
-    let plane = new THREE.Mesh( geometry, material );
+    let plane = new THREE.Mesh(geometry, material);
 
     plane.position.set(0, 0, -60);
     plane.rotation.x = Math.PI / 2;
     plane.receiveShadow = true;
-    scene.add( plane );
+    scene.add(plane);
 }
 
 function createLights() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-    directionalLight.position.set( 0, 3, 20 );
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(0, 3, 20);
     directionalLight.castShadow = true;
-    scene.add( directionalLight );
+    scene.add(directionalLight);
 
-    const directionalLight2 = new THREE.DirectionalLight( "orange", 1 );
-    directionalLight2.position.set( 0, 20, -20 );
+    const directionalLight2 = new THREE.DirectionalLight("orange", 1);
+    directionalLight2.position.set(0, 20, -20);
     directionalLight2.castShadow = true;
-    scene.add( directionalLight2 );
+    scene.add(directionalLight2);
 
 }
 
 function onWindowResize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    aspect = window.innerWidth/window.innerHeight;
+    aspect = window.innerWidth / window.innerHeight;
 
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
-    renderer.setSize( width, height );
+    renderer.setSize(width, height);
     renderer.render(scene, camera);
 }
 
-function createModel(){
-    loader.load( modelpath, function ( gltf ) {
+function createModel() {
+    loader.load(modelpath, function (gltf) {
         model = gltf.scene;
         model.scale.set(0.3, 0.3, 0.3);
         model.position.set(0, 0.2, -3);
-        gltf.scene.traverse(function(node) {
+        gltf.scene.traverse(function (node) {
             if (node.isMesh) {
                 node.castShadow = true;
             }
         });
-        scene.add( model );
+        scene.add(model);
 
         // add bounding box
         modelBox = new THREE.Box3().setFromObject(model);
 
-    }, undefined, function ( error ) {
-        console.error( error );
-    } );
+    }, undefined, function (error) {
+        console.error(error);
+    });
 }
 
 function animate() {
 
-     if (gameend) {
-         return;
-     }
+    if (gameend) {
+        return;
+    }
 
     // update bounding box for model
     if (model) {
@@ -187,10 +191,11 @@ function animate() {
     }
 
     stars.forEach(star => {
+        // move star
         star.position.z += speed;
 
         // set star visible range
-        star.visible = star.position.z < 0 && star.position.z > -50;
+        star.visible = star.position.z < 0 && star.position.z > -100;
 
         // reset star position
         if (star.position.z > 0) {
@@ -210,7 +215,7 @@ function animate() {
             star.position.x = randomNum(-4, 4);
             star.position.z += randomNum(-110, -60);
             score += 1;
-            document.getElementById("score").innerHTML ="Score: "+ score;
+            document.getElementById("score").innerHTML = "Score: " + score;
             // play sound effect
             let audio = new Audio(getpoint);
             audio.play();
@@ -219,16 +224,17 @@ function animate() {
     });
 
     dodecas.forEach(dodeca => {
+        // move dodeca
         dodeca.position.z += speed;
 
         // set dodeca visible range
-        dodeca.visible = dodeca.position.z < 0 && dodeca.position.z > -60;
+        dodeca.visible = dodeca.position.z < 0 && dodeca.position.z > -100;
 
         // reset dodeca position
         if (dodeca.position.z > 0) {
             // dodeca.visible = true;
             dodeca.position.x = randomNum(-4, 4);
-            dodeca.position.z += randomNum(-110, -60);
+            dodeca.position.z += randomNum(-140, -60);
         }
 
         //rotate dodeca
@@ -240,19 +246,18 @@ function animate() {
         if (modelBox && modelBox.intersectsSphere(dodecaSphere)) {
             // reset dodeca position
             dodeca.position.x = randomNum(-4, 4);
-            dodeca.position.z += randomNum(-110, -60);
+            dodeca.position.z += randomNum(-140, -60);
             life -= 1;
-            document.getElementById("life").innerHTML ="Life: "+ life;
+            document.getElementById("life").innerHTML = "Life: " + life;
             // play sound effect
             if (life !== 0) {
                 let audio = new Audio(loselife);
                 audio.play();
-            }
-            else {
+            } else {
                 let audio = new Audio(gameover);
                 audio.play();
                 gameend = true;
-                document.getElementById("finalScore").innerHTML ="Final Score: "+ score;
+                document.getElementById("finalScore").innerHTML = "Final Score: " + score;
                 document.getElementById("end").style.display = "block";
             }
         }
@@ -279,23 +284,23 @@ function randomNum(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function createdodeca(){
-    let geometry = new THREE.DodecahedronGeometry( 0.4 );
-    let material = new THREE.MeshPhongMaterial( {color: 0xFFC0CB, transparent: true, opacity: 0.9} );
-    dodeca = new THREE.Mesh( geometry, material );
+function createdodeca() {
+    let geometry = new THREE.DodecahedronGeometry(0.4);
+    let material = new THREE.MeshPhongMaterial({color: 0xFFC0CB, transparent: true, opacity: 0.9});
+    dodeca = new THREE.Mesh(geometry, material);
     dodeca.castShadow = true;
     dodeca.receiveShadow = true;
     dodeca.rotation.x = Math.PI / 4;
     dodeca.rotation.y = Math.PI / 4;
 
-    scene.add( dodeca );
+    scene.add(dodeca);
     return dodeca;
 }
 
-function createdodecas(){
-    for (let i = 0; i < 5; i += 1){
+function createdodecas() {
+    for (let i = 0; i < 5; i += 1) {
         dodeca = createdodeca();
-        dodeca.position.set(randomNum(-4,4), 0.5, randomNum(-120,-80));
+        dodeca.position.set(randomNum(-4, 4), 0.5, randomNum(-140, -60));
         dodecas.push(dodeca);
         scene.add(dodeca);
 
@@ -304,34 +309,33 @@ function createdodecas(){
     }
 }
 
-function createStar(){
-    let geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
-    let material = new THREE.MeshStandardMaterial( {color: 0xFFD700, metalness: 0.8, roughness: 0.5} );
-    star = new THREE.Mesh( geometry, material );
+function createStar() {
+    let geometry = new THREE.SphereGeometry(0.2, 32, 32);
+    let material = new THREE.MeshStandardMaterial({color: 0xFFD700, metalness: 0.8, roughness: 0.5});
+    star = new THREE.Mesh(geometry, material);
     star.castShadow = true;
     star.receiveShadow = true;
-    scene.add( star );
+    scene.add(star);
     // add bounding sphere
     star.geometry.computeBoundingSphere();
     star.boundingSphere = star.geometry.boundingSphere;
     return star;
 }
 
-function createStars(){
-    for (let i = 0; i < 15; i += 1){
+function createStars() {
+    for (let i = 0; i < 15; i += 1) {
         star = createStar();
-        star.position.set(randomNum(-4,4), 0.5, randomNum(-120,-80));
+        star.position.set(randomNum(-4, 4), 0.5, randomNum(-140, -60));
         stars.push(star);
         scene.add(star);
     }
 }
 
-function createTorus(color, z, tube){
-    let geometry = new THREE.TorusGeometry( 7, tube, 16, 100 );
-    let material = new THREE.MeshPhongMaterial( {color: color} );
-    let torus = new THREE.Mesh( geometry, material );
+function createTorus(color, z, tube) {
+    let geometry = new THREE.TorusGeometry(7, tube, 16, 100);
+    let material = new THREE.MeshPhongMaterial({color: color});
+    let torus = new THREE.Mesh(geometry, material);
     torus.castShadow = true;
     torus.position.set(0, 0, z)
-    scene.add( torus );
-    return torus;
+    scene.add(torus);
 }
