@@ -159,7 +159,7 @@ function createModel() {
     loader.load(modelpath, function (gltf) {
         model = gltf.scene;
         model.scale.set(0.35, 0.35, 0.35);
-        model.position.set(0, 0.2, -3);
+        model.position.set(0, 0, -3);
         gltf.scene.traverse(function (node) {
             if (node.isMesh) {
                 node.castShadow = true;
