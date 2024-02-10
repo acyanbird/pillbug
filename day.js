@@ -325,7 +325,7 @@ function createStar() {
 function createStars() {
     for (let i = 0; i < 15; i += 1) {
         star = createStar();
-        star.position.set(randomNum(-4, 4), 0.5, randomNum(-140, -60));
+        star.position.set(randomNum(-4, 4), 0.2, randomNum(-140, -60));
         stars.push(star);
         scene.add(star);
     }
