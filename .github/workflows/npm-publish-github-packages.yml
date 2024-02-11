@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - package  # or your default branch
+      - main  # or your default branch
       
 permissions: write-all
 
