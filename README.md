@@ -26,3 +26,4 @@ https://acyanbird.github.io/pillbug/
 - [ ] Animation using tween(?) or other library
 - [ ] Add a sun to day level
 - [ ] Index page adaptation
+- [ ] Mobile mode? Virtual buttons?
