@@ -1,3 +1,4 @@
+#### [中文](./README-zh.md)
 ## How to run
 ```bash
 git clone git@github.com:acyanbird/pillbug.git

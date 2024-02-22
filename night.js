@@ -42,7 +42,27 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 let aspect = window.innerWidth / window.innerHeight;
 
+let lifetext = "Life: "
+let scoretext = "Score: "
+let endtext = "Game Over"
+let finaltext = "Final Score: "
+
 function main() {
+
+    let lang = new URLSearchParams(window.location.search).get('lang');
+
+    if (lang === "zh") {
+        lifetext = "生命: "
+        scoretext = "分数: "
+        endtext = "游戏结束"
+        finaltext = "最终得分: "
+
+        document.getElementById("score").innerHTML = scoretext + 0;
+        document.getElementById("life").innerHTML = lifetext + 3;
+        document.getElementById("endText").innerHTML = endtext;
+
+    }
+
     canvas = document.getElementById("gl-canvas");
     // apply antialias to give better effect
     renderer = new THREE.WebGLRenderer({canvas, antialias: true});
@@ -208,7 +228,7 @@ function animate() {
             star.position.x = randomNum(-5, 5);
             star.position.z += randomNum(-90, -40);
             score += 1;
-            document.getElementById("score").innerHTML = "Score: " + score;
+            document.getElementById("score").innerHTML = scoretext + score;
             // play sound effect
             let audio = new Audio(getpoint);
             audio.play();
@@ -241,7 +261,7 @@ function animate() {
             cube.position.x = randomNum(-5, 5);
             cube.position.z += randomNum(-90, -40);
             life -= 1;
-            document.getElementById("life").innerHTML = "Life: " + life;
+            document.getElementById("life").innerHTML = lifetext + life;
             // play sound effect
             if (life !== 0) {
                 let audio = new Audio(loselife);
@@ -250,7 +270,7 @@ function animate() {
                 let audio = new Audio(gameover);
                 audio.play();
                 gameend = true;
-                document.getElementById("finalScore").innerHTML = "Final Score: " + score;
+                document.getElementById("finalScore").innerHTML = finaltext + score;
                 document.getElementById("end").style.display = "block";
             }
         }
