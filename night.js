@@ -60,6 +60,8 @@ function main() {
         document.getElementById("score").innerHTML = scoretext + 0;
         document.getElementById("life").innerHTML = lifetext + 3;
         document.getElementById("endText").innerHTML = endtext;
+        document.getElementById("restart").innerHTML = "点击这里回到主菜单"
+        document.getElementById("restart").href = "index-zh.html"
 
     }
 
