@@ -17,7 +17,7 @@ npm run build # 或者 npx vite build
 此在线演示已部署在 GitHub Pages 上。您可以使用工作流配置文件作为参考。
 
 ## 在线演示
-https://acyanbird.github.io/pillbug/
+https://acyanbird.github.io/pillbug/index-zh.html
 
 ## 待办事项
 - [ ] 减少单个文件中的重复代码

@@ -9,6 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
+        main_zh: 'index-zh.html',
         day: 'day.html',
         night: 'night.html'
       }
